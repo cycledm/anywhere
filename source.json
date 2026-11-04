@@ -12,6 +12,14 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.1.1",
+          "buildVersion": "5",
+          "date": "2026-11-04T11:46:52Z",
+          "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.1.1/Anywhere.ipa",
+          "size": 4233022,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.1.0",
           "buildVersion": "4",
           "date": "2026-11-04T11:26:23Z",
