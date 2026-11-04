@@ -4,7 +4,7 @@ import SwiftUI
 struct MapHomeView: View {
     @EnvironmentObject private var session: SpoofSession
     @EnvironmentObject private var pairing: PairingStore
-    @Binding var favoriteToCenter: SavedPlace?
+    @Binding var placeToCenter: SavedPlace?
 
     @AppStorage(MapCoordinates.correctionKey) private var correctAmapCoordinates = MapCoordinates.defaultCorrection
     @StateObject private var search = PlaceSearchCompleter()
@@ -127,7 +127,7 @@ struct MapHomeView: View {
 
             topChrome
         }
-        .onChange(of: favoriteToCenter) { _, place in
+        .onChange(of: placeToCenter) { _, place in
             guard let place else { return }
             let center = mapCoordinates.toMap(place.coordinate)
             withAnimation(.easeInOut(duration: 0.35)) {
@@ -141,7 +141,7 @@ struct MapHomeView: View {
                     pitch: visibleCamera?.pitch ?? 0
                 ))
             }
-            favoriteToCenter = nil
+            placeToCenter = nil
         }
         .onChange(of: session.pin?.latitude) { _, newValue in
             if newValue == nil { pinSelected = false }

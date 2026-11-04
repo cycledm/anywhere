@@ -162,13 +162,12 @@ struct SettingsView: View {
 
 struct PlacesView: View {
     @EnvironmentObject private var session: SpoofSession
-    @EnvironmentObject private var pairing: PairingStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var placeToRename: SavedPlace?
     @State private var renameText = ""
     @State private var confirmClearRecents = false
-    var onSelectFavorite: (SavedPlace) -> Void
+    var onSelectPlace: (SavedPlace) -> Void
 
     var body: some View {
         NavigationStack {
@@ -179,7 +178,7 @@ struct PlacesView: View {
                             .foregroundStyle(.secondary)
                     }
                     ForEach(session.favorites) { place in
-                        placeButton(place) { onSelectFavorite(place) }
+                        placeButton(place)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     session.removeFavorite(place)
@@ -203,7 +202,7 @@ struct PlacesView: View {
                             .foregroundStyle(.secondary)
                     }
                     ForEach(session.recents) { place in
-                        placeButton(place) { session.teleport(to: place.coordinate, pairing: pairing) }
+                        placeButton(place)
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     session.removeRecent(place)
@@ -257,9 +256,9 @@ struct PlacesView: View {
         }
     }
 
-    private func placeButton(_ place: SavedPlace, action: @escaping () -> Void) -> some View {
+    private func placeButton(_ place: SavedPlace) -> some View {
         Button {
-            action()
+            onSelectPlace(place)
             dismiss()
         } label: {
             VStack(alignment: .leading, spacing: 2) {

@@ -5,13 +5,13 @@ struct RootView: View {
     @EnvironmentObject private var pairing: PairingStore
     @State private var showSettings = false
     @State private var showPlaces = false
-    @State private var favoriteToCenter: SavedPlace?
+    @State private var placeToCenter: SavedPlace?
 
     var body: some View {
         // Bottom chrome is a sibling overlay aligned to the bottom — no full-screen
         // Spacer layer that can steal / pass map taps through the tray.
         ZStack(alignment: .bottom) {
-            MapHomeView(favoriteToCenter: $favoriteToCenter)
+            MapHomeView(placeToCenter: $placeToCenter)
 
             BottomControlsView(
                 showSettings: $showSettings,
@@ -25,7 +25,7 @@ struct RootView: View {
             SettingsView()
         }
         .sheet(isPresented: $showPlaces) {
-            PlacesView { favoriteToCenter = $0 }
+            PlacesView { placeToCenter = $0 }
         }
         .alert("Anywhere", isPresented: Binding(
             get: { session.lastError != nil },

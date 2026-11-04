@@ -165,6 +165,7 @@
 "Start simulating the shared place, with an optional random offset in meters." = "模拟定位到分享的地点，可设置以米为单位的随机偏移半径。";
 "Map Link" = "地图链接";
 "Random Offset Radius (Meters)" = "随机偏移半径（米）";
+"Offset distance: %@ m." = "偏移距离：%@ 米。";
 "Simulate location from ${mapLink}" = "使用 ${mapLink} 模拟定位";
 "Location" = "位置";
 "Enter an offset radius between 0 and 20,015,114 meters." = "请输入 0 至 20,015,114 米之间的偏移半径。";
