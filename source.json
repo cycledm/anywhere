@@ -12,6 +12,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.1.7",
+          "buildVersion": "11",
+          "date": "2026-11-04T15:15:29Z",
+          "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.1.7/Anywhere.ipa",
+          "size": 7050398,
+          "minOSVersion": "18.0",
+          "localizedDescription": "Selecting a recent place now centers the map and drops a pin. Shortcut notifications for starting a simulation show the applied offset, including zero.\n\n点按最近地点会居中并放置图钉，点右下角按钮才会启动模拟。快捷指令启动成功的通知会显示实际偏移距离，未偏移时显示 0 米。"
+        },
+        {
           "version": "1.1.6",
           "buildVersion": "10",
           "date": "2026-11-04T15:07:08Z",
