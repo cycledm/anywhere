@@ -16,6 +16,8 @@ This fork adds Shortcuts actions, SideStore pairing import, Simplified Chinese l
 
 ## Setup
 
+Once the first release is available, add the [Anywhere source (raw JSON)](https://raw.githubusercontent.com/cycledm/anywhere/main/source.json) in SideStore or AltStore Classic to install Anywhere and receive updates.
+
 Anywhere requires iOS 18 or iPadOS 18 or later. Before starting a simulation, complete device pairing and configure the local loopback connection. See the [setup guide](SETUP.md) for pairing options, network configuration, and Shortcuts setup.
 
 ## Build locally

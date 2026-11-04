@@ -16,6 +16,8 @@ Anywhere 是一款适用于 iPhone 和 iPad 的模拟定位工具，基于 [Chri
 
 ## 使用前准备
 
+首个版本发布后，可在 SideStore 或 AltStore Classic 中添加 [Anywhere 订阅源（raw JSON）](https://raw.githubusercontent.com/cycledm/anywhere/main/source.json)，用于安装和接收更新。
+
 Anywhere 支持 iOS 18 和 iPadOS 18 或更新版本。开始模拟前，需要完成设备配对并配置本机回环连接。配对方式、网络配置和快捷指令的具体步骤见[设置指南](SETUP.md)。
 
 ## 本地构建
