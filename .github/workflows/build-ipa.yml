@@ -2,6 +2,11 @@ name: Build unsigned IPA
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Published tag to sync to source.json instead of building an IPA
+        type: string
+        required: false
   push:
     tags:
       - 'v*'
@@ -11,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || !github.event.deleted
+    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag == '') || (github.event_name == 'push' && !github.event.deleted)
     runs-on: macos-26
     timeout-minutes: 30
     steps:
@@ -73,3 +78,46 @@ jobs:
             --verify-tag \
             --title "Anywhere ${GITHUB_REF_NAME#v}" \
             --generate-notes
+
+  sync-source:
+    needs: release
+    if: ${{ !cancelled() && (needs.release.result == 'success' || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Download published IPA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          gh release view --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease,publishedAt \
+            -- "$RELEASE_TAG" > "$RUNNER_TEMP/release.json"
+          gh release download --repo "$GITHUB_REPOSITORY" --pattern Anywhere.ipa \
+            --dir "$RUNNER_TEMP" -- "$RELEASE_TAG"
+
+      - name: Update subscription on main
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git checkout -B main FETCH_HEAD
+            python3 .github/scripts/update-source.py
+            git add -- source.json
+            if git diff --cached --quiet; then
+              exit 0
+            fi
+            git commit -m "Update Anywhere source for $RELEASE_TAG"
+            if git push origin HEAD:refs/heads/main; then
+              exit 0
+            fi
+          done
+          exit 1
