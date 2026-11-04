@@ -12,6 +12,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.2.0",
+          "buildVersion": "12",
+          "date": "2026-11-04T16:41:21Z",
+          "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.2.0/Anywhere.ipa",
+          "size": 7052133,
+          "minOSVersion": "18.0",
+          "localizedDescription": "Shortcut actions now support minimum and maximum offset radii and an Amap coordinate correction switch. Use the new simulation status action in an If condition.\n\n两个启动模拟的快捷指令新增最小和最大偏移半径，并可切换高德坐标修正。「是否正在模拟定位」返回可用于「如果」的布尔值。"
+        },
+        {
           "version": "1.1.7",
           "buildVersion": "11",
           "date": "2026-11-04T15:15:29Z",
