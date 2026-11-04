@@ -113,14 +113,17 @@ struct SettingsView: View {
                     Button {
                         showNameEasterEgg = true
                     } label: {
-                        Text(verbatim: "Anytime Anywhere")
+                        Text("Anywhere takes its name from milet’s ending theme for Frieren: Beyond Journey’s End.")
                             .font(.footnote.italic())
                             .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
             }
             .navigationTitle("Settings")

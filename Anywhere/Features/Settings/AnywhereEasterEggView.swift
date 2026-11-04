@@ -21,12 +21,6 @@ struct AnywhereEasterEggView: View {
                 .scaledToFit()
                 .accessibilityLabel("Album cover showing Frieren beneath a meteor shower")
                 .frame(maxHeight: .infinity)
-
-            Text("Anywhere takes its name from milet’s ending theme for Frieren: Beyond Journey’s End.")
-                .font(.footnote)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .foregroundStyle(.secondary)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
