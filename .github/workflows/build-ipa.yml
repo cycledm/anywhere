@@ -1,0 +1,75 @@
+name: Build unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || !github.event.deleted
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Generate Xcode project
+        run: |
+          xcodebuild -version
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Archive for iOS devices
+        run: |
+          xcodebuild archive \
+            -project Anywhere.xcodeproj \
+            -scheme Anywhere \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            -archivePath "$RUNNER_TEMP/Anywhere.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package unsigned IPA
+        run: |
+          app="$RUNNER_TEMP/Anywhere.xcarchive/Products/Applications/Anywhere.app"
+          test -x "$app/Anywhere"
+          test ! -e "$app/embedded.mobileprovision"
+          mkdir -p "$RUNNER_TEMP/package/Payload"
+          ditto "$app" "$RUNNER_TEMP/package/Payload/Anywhere.app"
+          ditto -c -k --keepParent "$RUNNER_TEMP/package/Payload" "$RUNNER_TEMP/Anywhere.ipa"
+          unzip -tq "$RUNNER_TEMP/Anywhere.ipa"
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ runner.temp }}/Anywhere.ipa
+          archive: false
+          if-no-files-found: error
+
+  release:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: Anywhere.ipa
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" Anywhere.ipa \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
+            --title "Anywhere ${GITHUB_REF_NAME#v}" \
+            --generate-notes
