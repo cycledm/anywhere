@@ -11,15 +11,22 @@ enum SharedMapLink {
                   url.port == nil, ["http", "https"].contains(url.scheme?.lowercased()) else { return nil }
             switch host {
             case "maps.apple", "maps.apple.com": self = .apple
-            case "uri.amap.com", "www.amap.com", "amap.com", "ditu.amap.com", "surl.amap.com": self = .amap
+            case "uri.amap.com", "www.amap.com", "amap.com", "ditu.amap.com", "surl.amap.com", "wb.amap.com": self = .amap
             case "api.map.baidu.com", "map.baidu.com", "j.map.baidu.com": self = .baidu
             default: return nil
             }
         }
     }
 
-    static func resolve(_ url: URL, correctAmap: Bool) async throws -> SimulationDestination {
-        guard let provider = Provider(url) else {
+    static func resolve(_ input: String, correctAmap: Bool) async throws -> SimulationDestination {
+        // Shortcuts can pass an Apple Maps share as text containing a link and place name.
+        let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        let directURL = URL(string: text, encodingInvalidCharacters: false)
+        let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        let range = NSRange(text.startIndex..<text.endIndex, in: text)
+        let url = directURL.flatMap { Provider($0) == nil ? nil : $0 }
+            ?? detector.matches(in: text, range: range).compactMap(\.url).first { Provider($0) != nil }
+        guard let url, let provider = Provider(url) else {
             throw QuickActionError.message(String(localized: "Share a place link from Apple Maps, Amap, or Baidu Maps."))
         }
         if let destination = try await destination(in: url, provider: provider, correctAmap: correctAmap) {
@@ -34,6 +41,12 @@ enum SharedMapLink {
             defer { session.invalidateAndCancel() }
             let redirect = MapRedirect(provider: provider)
             let (_, response) = try await session.bytes(for: URLRequest(url: url), delegate: redirect)
+            if provider == .amap, let response = response as? HTTPURLResponse,
+               (300..<400).contains(response.statusCode),
+               let target = response.value(forHTTPHeaderField: "Location").flatMap({ URL(string: $0) }),
+               let coordinate = amapShareCoordinate(in: target) {
+                return SimulationDestination(coordinate: coordinate)
+            }
             if let resolved = response.url, resolved != url,
                let destination = try await destination(in: resolved, provider: provider, correctAmap: correctAmap) {
                 return destination
@@ -70,6 +83,9 @@ enum SharedMapLink {
                 }
             }
         case .amap:
+            if let coordinate = amapShareCoordinate(in: url) {
+                return SimulationDestination(coordinate: coordinate)
+            }
             guard let raw = parse(value("position"), longitudeFirst: true) else { return nil }
             switch value("coordinate")?.lowercased() ?? "gaode" {
             case "wgs84": return SimulationDestination(coordinate: raw)
@@ -86,6 +102,17 @@ enum SharedMapLink {
             }
         }
         return nil
+    }
+
+    private static func amapShareCoordinate(in url: URL) -> CLLocationCoordinate2D? {
+        guard url.scheme == "https", Provider(url) == .amap, url.host?.lowercased() == "wb.amap.com",
+              url.path.isEmpty || url.path == "/",
+              let payload = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?
+                .first(where: { $0.name == "p" })?.value else { return nil }
+        // App share links encode p as POI ID, latitude, longitude, name, address.
+        let fields = payload.split(separator: ",", maxSplits: 3, omittingEmptySubsequences: false)
+        guard fields.count >= 3, let raw = parse("\(fields[1]),\(fields[2])") else { return nil }
+        return MapCoordinates.wgs84(fromGCJ02: raw)
     }
 
     private static func parse(_ string: String?, longitudeFirst: Bool = false) -> CLLocationCoordinate2D? {
@@ -117,6 +144,11 @@ enum SharedMapLink {
                         newRequest request: URLRequest,
                         completionHandler: @escaping (URLRequest?) -> Void) {
             let url = request.url
+            // Read coordinates from this redirect before the share page redirects again.
+            if provider == .amap, let url, amapShareCoordinate(in: url) != nil {
+                completionHandler(nil)
+                return
+            }
             let allowed = url?.scheme == "https" && url.flatMap(Provider.init) == provider
             completionHandler(allowed ? request : nil)
         }

@@ -10,7 +10,7 @@ struct StartSimulationIntent: LiveActivityIntent {
     static let authenticationPolicy: IntentAuthenticationPolicy = .requiresLocalDeviceAuthentication
 
     @Parameter(title: "Map Link")
-    var mapLink: URL
+    var mapLink: String
 
     @Parameter(title: "Random Offset Radius (Meters)", default: 0)
     var radius: Double
@@ -123,7 +123,7 @@ enum QuickActions {
         content.title = success ? "Anywhere" : String(localized: "Anywhere Quick Action Failed")
         content.body = message
         content.sound = .default
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+        let request = UNNotificationRequest(identifier: "anywhere.quick-action.result", content: content, trigger: nil)
         try? await UNUserNotificationCenter.current().add(request)
     }
 }
