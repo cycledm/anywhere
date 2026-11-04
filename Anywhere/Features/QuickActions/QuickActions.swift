@@ -12,19 +12,27 @@ struct StartSimulationIntent: LiveActivityIntent {
     @Parameter(title: "Map Link")
     var mapLink: String
 
-    @Parameter(title: "Random Offset Radius (Meters)", default: 0)
+    @Parameter(title: "Correct Amap coordinates (GCJ-02)", default: true)
+    var correctAmap: Bool
+
+    @Parameter(title: "Minimum Offset Radius (Meters)", default: 0)
+    var minimumRadius: Double
+
+    @Parameter(title: "Maximum Offset Radius (Meters)", default: 0)
     var radius: Double
 
     static var parameterSummary: some ParameterSummary {
         Summary("Simulate location from \(\.$mapLink)") {
+            \.$correctAmap
+            \.$minimumRadius
             \.$radius
         }
     }
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        try await QuickActions.start(radius: radius) {
-            try await SharedMapLink.resolve(mapLink, correctAmap: QuickActions.mapCoordinates.correctAmap)
+        try await QuickActions.start(minimumRadius: minimumRadius, maximumRadius: radius) {
+            try await SharedMapLink.resolve(mapLink, correctAmap: correctAmap)
         }
         return .result()
     }
@@ -39,26 +47,30 @@ struct StartSimulationFromLocationIntent: LiveActivityIntent {
     @Parameter(title: "Location")
     var location: CLPlacemark
 
-    @Parameter(title: "Input Is Already WGS-84", default: false)
-    var inputIsWGS84: Bool
+    @Parameter(title: "Correct Amap coordinates (GCJ-02)", default: true)
+    var correctAmap: Bool
 
-    @Parameter(title: "Random Offset Radius (Meters)", default: 0)
+    @Parameter(title: "Minimum Offset Radius (Meters)", default: 0)
+    var minimumRadius: Double
+
+    @Parameter(title: "Maximum Offset Radius (Meters)", default: 0)
     var radius: Double
 
     static var parameterSummary: some ParameterSummary {
         Summary("Simulate the location \(\.$location)") {
+            \.$correctAmap
+            \.$minimumRadius
             \.$radius
-            \.$inputIsWGS84
         }
     }
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        try await QuickActions.start(radius: radius) {
+        try await QuickActions.start(minimumRadius: minimumRadius, maximumRadius: radius) {
             guard let fix = location.location else {
                 throw QuickActionError.message(String(localized: "The supplied location has no usable coordinates."))
             }
-            let coordinate = inputIsWGS84 ? fix.coordinate : QuickActions.mapCoordinates.fromMap(fix.coordinate)
+            let coordinate = MapCoordinates(correctAmap: correctAmap).fromMap(fix.coordinate)
             return SimulationDestination(coordinate: coordinate, name: location.name,
                                          sourceAltitude: SimulationDestination.validAltitude(from: fix))
         }
@@ -90,15 +102,11 @@ struct AnywhereShortcuts: AppShortcutsProvider {
 enum QuickActions {
     private static var actionID = UUID()
 
-    static var mapCoordinates: MapCoordinates {
-        let enabled = UserDefaults.standard.object(forKey: MapCoordinates.correctionKey) as? Bool
-        return MapCoordinates(correctAmap: enabled ?? MapCoordinates.defaultCorrection)
-    }
-
-    static func start(radius: Double, resolve: () async throws -> SimulationDestination) async throws {
+    static func start(minimumRadius: Double, maximumRadius: Double, resolve: () async throws -> SimulationDestination) async throws {
         try await run { id in
-            guard radius.isFinite, (0...LocationOffset.maximumRadius).contains(radius) else {
-                throw QuickActionError.message(String(localized: "Enter an offset radius between 0 and 20,015,114 meters."))
+            guard minimumRadius.isFinite, maximumRadius.isFinite,
+                  minimumRadius >= 0, minimumRadius <= maximumRadius, maximumRadius <= LocationOffset.maximumRadius else {
+                throw QuickActionError.message(String(localized: "Enter offset radii from 0 to 20,015,114 meters, with the minimum no greater than the maximum."))
             }
             let destination = try await resolve()
             try Task.checkCancellation()
@@ -106,7 +114,9 @@ enum QuickActions {
             guard CLLocationCoordinate2DIsValid(destination.coordinate) else {
                 throw QuickActionError.message(String(localized: "The supplied location has no usable coordinates."))
             }
-            let target = LocationOffset.randomCoordinate(around: destination.coordinate, radius: radius)
+            guard let target = LocationOffset.randomCoordinate(around: destination.coordinate, minimumRadius: minimumRadius, maximumRadius: maximumRadius) else {
+                throw QuickActionError.message(String(localized: "Could not find a coordinate within the requested offset range."))
+            }
             SpoofSession.shared.teleport(to: target, pairing: .shared, fromQuickAction: true)
             try checkSimulationError()
             return destination.notificationBody(simulatedCoordinate: target)

@@ -5,23 +5,40 @@ enum LocationOffset {
     private static let earthRadius = 6_371_008.8
     static let maximumRadius = 20_015_114.0
 
-    static func randomCoordinate(around origin: CLLocationCoordinate2D, radius: Double) -> CLLocationCoordinate2D {
-        guard radius > 0 else { return origin }
+    static func randomCoordinate(around origin: CLLocationCoordinate2D, minimumRadius: Double,
+                                 maximumRadius: Double) -> CLLocationCoordinate2D? {
+        guard maximumRadius > 0 else { return origin }
         let center = CLLocation(latitude: origin.latitude, longitude: origin.longitude)
-        // Enforce the radius using Core Location distance after sampling on a sphere.
+        let minimumArea = pow(sin(minimumRadius / (2 * earthRadius)), 2)
+        let maximumArea = pow(sin(maximumRadius / (2 * earthRadius)), 2)
+        // Equal bounds need a small tolerance for floating-point and geodesic rounding.
+        let tolerance = minimumRadius == maximumRadius ? 0.01 : 0
+        let allowed = (minimumRadius - tolerance)...(maximumRadius + tolerance)
+        let midpoint = (minimumRadius + maximumRadius) / 2
+
         for _ in 0..<8 {
-            let point = sample(around: origin, radius: radius)
-            if center.distance(from: CLLocation(latitude: point.latitude, longitude: point.longitude)) <= radius {
-                return point
+            let bearing = Double.random(in: 0..<(2 * Double.pi))
+            var angle = 2 * asin(sqrt(Double.random(in: minimumArea...maximumArea)))
+            var lowerAngle = 0.0
+            var upperAngle = Double.pi
+            // Refine the spherical estimate using the same distance metric as the notification.
+            for _ in 0..<40 {
+                let point = coordinate(from: origin, angle: angle, bearing: bearing)
+                let distance = center.distance(from: CLLocation(latitude: point.latitude, longitude: point.longitude))
+                if allowed.contains(distance) { return point }
+                if distance < midpoint {
+                    lowerAngle = angle
+                } else {
+                    upperAngle = angle
+                }
+                angle = (lowerAngle + upperAngle) / 2
             }
         }
-        return origin
+        return nil
     }
 
-    private static func sample(around origin: CLLocationCoordinate2D, radius: Double) -> CLLocationCoordinate2D {
-        // Sample uniformly by area on a spherical cap.
-        let angularDistance = 2 * asin(sqrt(Double.random(in: 0..<1)) * sin(radius / (2 * earthRadius)))
-        let bearing = Double.random(in: 0..<(2 * Double.pi))
+    private static func coordinate(from origin: CLLocationCoordinate2D, angle angularDistance: Double,
+                                   bearing: Double) -> CLLocationCoordinate2D {
         let radians = Double.pi / 180
         let latitude = origin.latitude * radians
         let sine = sin(latitude) * cos(angularDistance) + cos(latitude) * sin(angularDistance) * cos(bearing)
