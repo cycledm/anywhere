@@ -165,6 +165,9 @@
 "Start simulating the shared place, with an optional random offset in meters." = "模拟定位到分享的地点，可设置以米为单位的随机偏移半径。";
 "Map Link" = "地图链接";
 "Random Offset Radius (Meters)" = "随机偏移半径（米）";
+"Input Is Already WGS-84" = "输入已是 WGS-84 坐标";
+"Is Simulated Location Active" = "是否正在模拟定位";
+"Returns whether Anywhere is currently simulating a location." = "返回 Anywhere 当前是否正在模拟定位。";
 "Offset distance: %@ m." = "偏移距离：%@ 米。";
 "Simulate location from ${mapLink}" = "使用 ${mapLink} 模拟定位";
 "Location" = "位置";

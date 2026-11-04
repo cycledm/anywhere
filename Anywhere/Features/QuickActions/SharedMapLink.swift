@@ -66,22 +66,33 @@ enum SharedMapLink {
         case .apple:
             guard ["", "/", "/place", "/search"].contains(url.path) else { return nil }
             let correction = MapCoordinates(correctAmap: correctAmap)
-            if let raw = parse(value("coordinate")) ?? parse(value("ll")) ?? parse(value("q")) {
-                return SimulationDestination(coordinate: correction.fromMap(raw))
+            let raw = parse(value("coordinate")) ?? parse(value("ll")) ?? parse(value("q"))
+            let corrected = raw.map(correction.fromMap)
+            if let raw, let corrected,
+               raw.latitude == corrected.latitude, raw.longitude == corrected.longitude {
+                return SimulationDestination(coordinate: raw)
             }
+
+            // Prefer the MapKit place coordinate used by in-app search when correction is enabled.
             if let id = value("place-id").flatMap(MKMapItem.Identifier.init(rawValue:)) {
-                let item = try await MKMapItemRequest(mapItemIdentifier: id).mapItem
-                let location: CLLocation?
-                if #available(iOS 26.0, macOS 26.0, *) {
-                    location = item.location
-                } else {
-                    location = item.placemark.location
-                }
-                if let location, CLLocationCoordinate2DIsValid(location.coordinate) {
-                    return SimulationDestination(coordinate: correction.fromMap(location.coordinate),
-                                                 sourceAltitude: SimulationDestination.validAltitude(from: location))
+                do {
+                    let item = try await MKMapItemRequest(mapItemIdentifier: id).mapItem
+                    let location: CLLocation?
+                    if #available(iOS 26.0, macOS 26.0, *) {
+                        location = item.location
+                    } else {
+                        location = item.placemark.location
+                    }
+                    if let location, CLLocationCoordinate2DIsValid(location.coordinate) {
+                        return SimulationDestination(coordinate: correction.fromMap(location.coordinate),
+                                                     sourceAltitude: SimulationDestination.validAltitude(from: location))
+                    }
+                } catch {
+                    try Task.checkCancellation()
+                    if raw == nil { throw error }
                 }
             }
+            if let corrected { return SimulationDestination(coordinate: corrected) }
         case .amap:
             if let coordinate = amapShareCoordinate(in: url) {
                 return SimulationDestination(coordinate: coordinate)

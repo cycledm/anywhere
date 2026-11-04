@@ -24,9 +24,7 @@ struct StartSimulationIntent: LiveActivityIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         try await QuickActions.start(radius: radius) {
-            let defaults = UserDefaults.standard
-            let correction = defaults.object(forKey: MapCoordinates.correctionKey) as? Bool ?? MapCoordinates.defaultCorrection
-            return try await SharedMapLink.resolve(mapLink, correctAmap: correction)
+            try await SharedMapLink.resolve(mapLink, correctAmap: QuickActions.mapCoordinates.correctAmap)
         }
         return .result()
     }
@@ -41,12 +39,16 @@ struct StartSimulationFromLocationIntent: LiveActivityIntent {
     @Parameter(title: "Location")
     var location: CLPlacemark
 
+    @Parameter(title: "Input Is Already WGS-84", default: false)
+    var inputIsWGS84: Bool
+
     @Parameter(title: "Random Offset Radius (Meters)", default: 0)
     var radius: Double
 
     static var parameterSummary: some ParameterSummary {
         Summary("Simulate the location \(\.$location)") {
             \.$radius
+            \.$inputIsWGS84
         }
     }
 
@@ -56,10 +58,22 @@ struct StartSimulationFromLocationIntent: LiveActivityIntent {
             guard let fix = location.location else {
                 throw QuickActionError.message(String(localized: "The supplied location has no usable coordinates."))
             }
-            return SimulationDestination(coordinate: fix.coordinate, name: location.name,
+            let coordinate = inputIsWGS84 ? fix.coordinate : QuickActions.mapCoordinates.fromMap(fix.coordinate)
+            return SimulationDestination(coordinate: coordinate, name: location.name,
                                          sourceAltitude: SimulationDestination.validAltitude(from: fix))
         }
         return .result()
+    }
+}
+
+struct GetSimulationStatusIntent: LiveActivityIntent {
+    static let title: LocalizedStringResource = "Is Simulated Location Active"
+    static let description = IntentDescription("Returns whether Anywhere is currently simulating a location.")
+    static let openAppWhenRun = false
+
+    @MainActor
+    func perform() async throws -> some IntentResult & ReturnsValue<Bool> {
+        .result(value: SpoofSession.shared.isSpoofing)
     }
 }
 
@@ -75,6 +89,11 @@ struct AnywhereShortcuts: AppShortcutsProvider {
 @MainActor
 enum QuickActions {
     private static var actionID = UUID()
+
+    static var mapCoordinates: MapCoordinates {
+        let enabled = UserDefaults.standard.object(forKey: MapCoordinates.correctionKey) as? Bool
+        return MapCoordinates(correctAmap: enabled ?? MapCoordinates.defaultCorrection)
+    }
 
     static func start(radius: Double, resolve: () async throws -> SimulationDestination) async throws {
         try await run { id in
