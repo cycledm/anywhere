@@ -12,6 +12,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.1.2",
+          "buildVersion": "6",
+          "date": "2026-11-04T12:09:20Z",
+          "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.1.2/Anywhere.ipa",
+          "size": 4234041,
+          "minOSVersion": "18.0",
+          "localizedDescription": "**Full Changelog**: https://github.com/cycledm/anywhere/compare/v1.1.1...v1.1.2"
+        },
+        {
           "version": "1.1.1",
           "buildVersion": "5",
           "localizedDescription": "Added an Anytime Anywhere easter egg at the bottom of Settings, featuring the Frieren anime edition cover.\n\n设置页底部新增「Anytime Anywhere」彩蛋，展示《葬送的芙莉莲》动画限定盘封面。",
