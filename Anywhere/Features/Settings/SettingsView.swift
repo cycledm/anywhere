@@ -15,6 +15,7 @@ struct SettingsView: View {
 
     @State private var showImporter = false
     @State private var showPairOnDevice = false
+    @State private var showNameEasterEgg = false
     @EnvironmentObject private var loopback: LoopbackMonitor
 
     private var supportsOnDevicePairing: Bool {
@@ -107,6 +108,20 @@ struct SettingsView: View {
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
+
+                Section {
+                    Button {
+                        showNameEasterEgg = true
+                    } label: {
+                        Text(verbatim: "Anytime Anywhere")
+                            .font(.footnote.italic())
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 4)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                }
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -134,6 +149,9 @@ struct SettingsView: View {
             .sheet(isPresented: $showPairOnDevice) {
                 PairOnDeviceView()
                     .environmentObject(pairing)
+            }
+            .fullScreenCover(isPresented: $showNameEasterEgg) {
+                AnywhereEasterEggView()
             }
         }
     }

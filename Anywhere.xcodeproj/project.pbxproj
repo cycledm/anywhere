@@ -11,6 +11,7 @@
 		1DE07D4738D5E5DD24EB81B4 /* PairOnDeviceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AC65E487E25227336681B6 /* PairOnDeviceService.swift */; };
 		2198B4DCBB8A604F12CE0729 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA5820CFCD4178D77DFD1DCB /* InfoPlist.strings */; };
 		25148192310AA8D3666226A5 /* MapDropPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDCB3B0B51C3AA4B6D0794C /* MapDropPin.swift */; };
+		2AD734E81C6F387F842FC0BA /* AnywhereEasterEggView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B927A1B9B0DCD1D4A1B02448 /* AnywhereEasterEggView.swift */; };
 		3DFCAA012BB953D288318D3D /* BackgroundKeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE904D0F0E057EC39C09859 /* BackgroundKeepAlive.swift */; };
 		3F505E13D32D79E2230C99F4 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F1C7ED34794CBC85B3B6A1 /* QuickActions.swift */; };
 		4392B35304DACBD7888D2726 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FAC5E557FF7623F7C22E48A /* Assets.xcassets */; };
@@ -73,6 +74,7 @@
 		A40E41709924AD233799F378 /* PairingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingStore.swift; sourceTree = "<group>"; };
 		AA5820CFCD4178D77DFD1DCB /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		B6446127B61FB9A8CA6435C5 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		B927A1B9B0DCD1D4A1B02448 /* AnywhereEasterEggView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnywhereEasterEggView.swift; sourceTree = "<group>"; };
 		BCDCB3B0B51C3AA4B6D0794C /* MapDropPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDropPin.swift; sourceTree = "<group>"; };
 		BE6B682E85BAEEB15959EC5D /* SetupFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupFlowView.swift; sourceTree = "<group>"; };
 		C3F5A6CF2A9DD16AB898B774 /* AnywhereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnywhereApp.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		4DFA43E44D409B104DCFFA96 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				B927A1B9B0DCD1D4A1B02448 /* AnywhereEasterEggView.swift */,
 				5870B9EE7295548403CBF115 /* PairOnDeviceView.swift */,
 				54075C004BB8991CB1B71A25 /* SettingsView.swift */,
 			);
@@ -328,6 +331,7 @@
 			files = (
 				647CF447FD0FB92D360F475A /* AnywhereApp.swift in Sources */,
 				4BCB07B1717F94E33651AAB7 /* AnywhereAppDelegate.swift in Sources */,
+				2AD734E81C6F387F842FC0BA /* AnywhereEasterEggView.swift in Sources */,
 				3DFCAA012BB953D288318D3D /* BackgroundKeepAlive.swift in Sources */,
 				DD2A3EB4D5A936A5B6FC5960 /* DeviceTunnel.swift in Sources */,
 				1B8BEC6A2CF7DA38889F646A /* JoystickPad.swift in Sources */,
@@ -367,7 +371,7 @@
 				CODE_SIGN_ENTITLEMENTS = Anywhere/Resources/Anywhere.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -378,7 +382,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Vendor/idevice",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lidevice_ffi",
@@ -474,7 +478,7 @@
 				CODE_SIGN_ENTITLEMENTS = Anywhere/Resources/Anywhere.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -485,7 +489,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Vendor/idevice",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lidevice_ffi",
