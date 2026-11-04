@@ -219,15 +219,16 @@ struct PlacesView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Done") { dismiss() }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        confirmClearRecents = true
-                    } label: {
-                        Image(systemName: "trash")
-                            .foregroundStyle(.red)
+                if !session.recents.isEmpty {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            confirmClearRecents = true
+                        } label: {
+                            Image(systemName: "trash")
+                                .foregroundStyle(.red)
+                        }
+                        .accessibilityLabel("Clear Recent Places")
                     }
-                    .accessibilityLabel("Clear Recent Places")
-                    .disabled(session.recents.isEmpty)
                 }
             }
             .alert("Clear Recent Places?", isPresented: $confirmClearRecents) {

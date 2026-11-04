@@ -131,6 +131,9 @@ struct MapHomeView: View {
             guard let place else { return }
             let center = mapCoordinates.toMap(place.coordinate)
             withAnimation(.easeInOut(duration: 0.35)) {
+                session.pin = place.coordinate
+                pinPlaceName = place.name
+                pinSelected = false
                 position = .camera(MapCamera(
                     centerCoordinate: center,
                     distance: visibleCamera?.distance ?? 1200,
