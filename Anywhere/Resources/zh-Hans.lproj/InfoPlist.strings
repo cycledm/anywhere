@@ -1,0 +1,3 @@
+"NSLocationWhenInUseUsageDescription" = "Anywhere 使用当前位置来居中地图，并在结束模拟后返回当前位置。";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Anywhere 在后台保持定位会话，以便继续模拟位置。";
+"NSLocalNetworkUsageDescription" = "Anywhere 使用本地网络广播配对服务，并通过回环连接访问本机开发者服务。";

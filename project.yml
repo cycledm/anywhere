@@ -1,6 +1,6 @@
-name: Locus
+name: Anywhere
 options:
-  bundleIdPrefix: com.chrismack
+  bundleIdPrefix: dev.cycledm
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "16.0"
@@ -11,17 +11,19 @@ options:
       file: true
 settings:
   base:
-    # Set your Apple Developer Team ID to build from source (see README).
+    # Set your Apple Developer Team ID to build from source (see SETUP.md).
     DEVELOPMENT_TEAM: ""
     SWIFT_VERSION: "5.0"
+    SWIFT_EMIT_LOC_STRINGS: YES
     TARGETED_DEVICE_FAMILY: "1,2"
     IPHONEOS_DEPLOYMENT_TARGET: "18.0"
 targets:
-  Locus:
+  Anywhere:
     type: application
+    productName: Anywhere
     platform: iOS
     sources:
-      - path: Locus
+      - path: Anywhere
         excludes:
           - "**/Info.plist"
       - path: AppIcon.icon
@@ -31,12 +33,12 @@ targets:
         buildPhase: none
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.chrismack.locus
-        PRODUCT_NAME: Locus
-        MARKETING_VERSION: "1.0.2"
-        CURRENT_PROJECT_VERSION: "3"
-        INFOPLIST_FILE: Locus/Resources/Info.plist
-        CODE_SIGN_ENTITLEMENTS: Locus/Resources/Locus.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: dev.cycledm.anywhere
+        PRODUCT_NAME: Anywhere
+        MARKETING_VERSION: "1.1.0"
+        CURRENT_PROJECT_VERSION: "4"
+        INFOPLIST_FILE: Anywhere/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Anywhere/Resources/Anywhere.entitlements
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: ""
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
