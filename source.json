@@ -16,7 +16,7 @@
           "buildVersion": "8",
           "date": "2026-11-04T14:37:58Z",
           "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.1.4/Anywhere.ipa",
-          "size": 7050722,
+          "size": 7044314,
           "minOSVersion": "18.0",
           "localizedDescription": "Fixed Apple Maps and Amap shares in Shortcuts. Shortcut result notifications now replace the previous result.\n\n修复苹果地图和高德地图分享至快捷指令的问题。快捷操作通知只保留最近一次结果。"
         },
