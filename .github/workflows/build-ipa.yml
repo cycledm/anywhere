@@ -47,9 +47,14 @@ jobs:
           test -x "$app/Anywhere"
           test ! -e "$app/embedded.mobileprovision"
           mkdir -p "$RUNNER_TEMP/package/Payload"
-          ditto "$app" "$RUNNER_TEMP/package/Payload/Anywhere.app"
-          ditto -c -k --keepParent "$RUNNER_TEMP/package/Payload" "$RUNNER_TEMP/Anywhere.ipa"
+          ditto --norsrc --noextattr "$app" "$RUNNER_TEMP/package/Payload/Anywhere.app"
+          ditto -c -k --norsrc --noextattr --keepParent "$RUNNER_TEMP/package/Payload" "$RUNNER_TEMP/Anywhere.ipa"
           unzip -tq "$RUNNER_TEMP/Anywhere.ipa"
+          unzip -Z1 "$RUNNER_TEMP/Anywhere.ipa" | awk '
+            /^Payload\/Anywhere\.app\/Info\.plist$/ { hasInfo = 1 }
+            /(^|\/)\._/ || !/^Payload\/(Anywhere\.app\/.*)?$/ { unexpected = 1 }
+            END { exit !(hasInfo && !unexpected) }
+          '
 
       - name: Upload IPA
         uses: actions/upload-artifact@v7

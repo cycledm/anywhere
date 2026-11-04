@@ -4,10 +4,12 @@ import SwiftUI
 struct MapHomeView: View {
     @EnvironmentObject private var session: SpoofSession
     @EnvironmentObject private var pairing: PairingStore
+    @Binding var favoriteToCenter: SavedPlace?
 
     @AppStorage(MapCoordinates.correctionKey) private var correctAmapCoordinates = MapCoordinates.defaultCorrection
     @StateObject private var search = PlaceSearchCompleter()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @State private var visibleCamera: MapCamera?
     @State private var searchText = ""
     @State private var searchTask: Task<Void, Never>?
     @FocusState private var searchFocused: Bool
@@ -112,6 +114,7 @@ struct MapHomeView: View {
                 .mapControlVisibility(.hidden)
                 .onMapCameraChange { context in
                     search.region = context.region
+                    visibleCamera = context.camera
                 }
                 .onTapGesture { point in
                     searchFocused = false
@@ -123,6 +126,19 @@ struct MapHomeView: View {
             .background(Color.black.ignoresSafeArea())
 
             topChrome
+        }
+        .onChange(of: favoriteToCenter) { _, place in
+            guard let place else { return }
+            let center = mapCoordinates.toMap(place.coordinate)
+            withAnimation(.easeInOut(duration: 0.35)) {
+                position = .camera(MapCamera(
+                    centerCoordinate: center,
+                    distance: visibleCamera?.distance ?? 1200,
+                    heading: visibleCamera?.heading ?? 0,
+                    pitch: visibleCamera?.pitch ?? 0
+                ))
+            }
+            favoriteToCenter = nil
         }
         .onChange(of: session.pin?.latitude) { _, newValue in
             if newValue == nil { pinSelected = false }
@@ -304,23 +320,21 @@ struct MapHomeView: View {
         .accessibilityLabel("Current location")
     }
 
-    /// Center on the active simulated fix or let MapKit center on its own user annotation.
+    /// Center on the current fix with a north-up, flat camera.
     private func goToCurrentLocation() {
-        let meters: CLLocationDistance = 900
         withAnimation(.easeInOut(duration: 0.35)) {
-            if session.isSpoofing, let sim = session.simulated {
-                position = .region(MKCoordinateRegion(
-                    center: mapCoordinates.toMap(sim),
-                    latitudinalMeters: meters,
-                    longitudinalMeters: meters
+            let current = session.isSpoofing ? session.simulated : session.lastKnownCoordinate
+            if let current {
+                position = .camera(MapCamera(
+                    centerCoordinate: mapCoordinates.toMap(current),
+                    distance: 900, heading: 0, pitch: 0
                 ))
             } else {
                 position = .userLocation(
                     followsHeading: false,
-                    fallback: .region(MKCoordinateRegion(
-                        center: CLLocationCoordinate2D(latitude: 37.3349, longitude: -122.0090),
-                        latitudinalMeters: 2000,
-                        longitudinalMeters: 2000
+                    fallback: .camera(MapCamera(
+                        centerCoordinate: CLLocationCoordinate2D(latitude: 37.3349, longitude: -122.0090),
+                        distance: 2000, heading: 0, pitch: 0
                     ))
                 )
             }

@@ -167,6 +167,8 @@ struct PlacesView: View {
 
     @State private var placeToRename: SavedPlace?
     @State private var renameText = ""
+    @State private var confirmClearRecents = false
+    var onSelectFavorite: (SavedPlace) -> Void
 
     var body: some View {
         NavigationStack {
@@ -177,7 +179,7 @@ struct PlacesView: View {
                             .foregroundStyle(.secondary)
                     }
                     ForEach(session.favorites) { place in
-                        placeButton(place)
+                        placeButton(place) { onSelectFavorite(place) }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     session.removeFavorite(place)
@@ -201,7 +203,7 @@ struct PlacesView: View {
                             .foregroundStyle(.secondary)
                     }
                     ForEach(session.recents) { place in
-                        placeButton(place)
+                        placeButton(place) { session.teleport(to: place.coordinate, pairing: pairing) }
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     session.removeRecent(place)
@@ -217,6 +219,22 @@ struct PlacesView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Done") { dismiss() }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        confirmClearRecents = true
+                    } label: {
+                        Image(systemName: "trash")
+                            .foregroundStyle(.red)
+                    }
+                    .accessibilityLabel("Clear Recent Places")
+                    .disabled(session.recents.isEmpty)
+                }
+            }
+            .alert("Clear Recent Places?", isPresented: $confirmClearRecents) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) { session.removeAllRecents() }
+            } message: {
+                Text("This removes all recent places. Your favorites are kept.")
             }
             .alert("Rename Favorite", isPresented: Binding(
                 get: { placeToRename != nil },
@@ -238,9 +256,9 @@ struct PlacesView: View {
         }
     }
 
-    private func placeButton(_ place: SavedPlace) -> some View {
+    private func placeButton(_ place: SavedPlace, action: @escaping () -> Void) -> some View {
         Button {
-            session.teleport(to: place.coordinate, pairing: pairing)
+            action()
             dismiss()
         } label: {
             VStack(alignment: .leading, spacing: 2) {

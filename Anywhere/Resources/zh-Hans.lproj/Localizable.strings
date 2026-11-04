@@ -97,6 +97,9 @@
 "Privacy" = "隐私";
 "Ready when you are" = "准备就绪";
 "Recents" = "最近地点";
+"Clear Recent Places" = "清空最近地点";
+"Clear Recent Places?" = "清空最近地点？";
+"This removes all recent places. Your favorites are kept." = "将移除所有最近地点，收藏会保留。";
 "Reconnecting…" = "正在重新连接…";
 "Remove pairing file" = "移除配对文件";
 "Remove Pin" = "移除图钉";

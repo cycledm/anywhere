@@ -106,6 +106,10 @@ final class SpoofSession: ObservableObject {
         return false
     }
 
+    var lastKnownCoordinate: CLLocationCoordinate2D? {
+        locationKeeper.lastKnownCoordinate
+    }
+
     func teleport(to coordinate: CLLocationCoordinate2D, pairing: PairingStore, fromQuickAction: Bool = false) {
         guard pairing.hasPairingFile else {
             lastError = String(localized: "Import an RPPairing file in Settings first.")
@@ -256,6 +260,11 @@ final class SpoofSession: ObservableObject {
 
     func removeRecent(_ place: SavedPlace) {
         recents.removeAll { $0.id == place.id }
+        SavedPlace.save(recents, key: recentsKey)
+    }
+
+    func removeAllRecents() {
+        recents.removeAll()
         SavedPlace.save(recents, key: recentsKey)
     }
 
