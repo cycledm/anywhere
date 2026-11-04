@@ -29,6 +29,9 @@ struct AnywhereApp: App {
             .environmentObject(session)
             .environmentObject(pairing)
             .environmentObject(loopback)
+            .onChange(of: showMap && scenePhase != .background, initial: true) { _, inForeground in
+                session.setMapInForeground(inForeground)
+            }
             .task(id: scenePhase == .active && pairing.hasPairingFile) {
                 await loopback.monitor(whileActive: scenePhase == .active && pairing.hasPairingFile)
             }

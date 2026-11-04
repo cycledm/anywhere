@@ -129,19 +129,16 @@ final class SpoofSession: ObservableObject {
         isBusy = true
         let result = LocationEngine.clear(reconnectWith: fromQuickAction ? pairing.pairingPath : nil)
         isBusy = false
+        endBackground()
+        locationKeeper.isKeepingSimulationAlive = false
         switch result {
         case .success:
             simulated = nil
             lastError = nil
             status = .idle
-            endBackground()
-            // Keep location updates running so the map puck / locate button
-            // can return to the real GPS fix (not the leftover pin).
-            locationKeeper.start()
         case .failure(let error):
             lastError = error.localizedDescription
             status = .dropped(error.localizedDescription)
-            endBackground()
             if !fromQuickAction { postDropNotification(error.localizedDescription) }
         }
     }
@@ -150,9 +147,8 @@ final class SpoofSession: ObservableObject {
         locationKeeper.requestPermission()
     }
 
-    /// Start lightweight GPS updates for the map puck / locate button.
-    func startLocationUpdates() {
-        locationKeeper.start()
+    func setMapInForeground(_ inForeground: Bool) {
+        locationKeeper.isMapInForeground = inForeground
     }
 
     func startJoystick(pairing: PairingStore) {
@@ -315,7 +311,7 @@ final class SpoofSession: ObservableObject {
             status = .active
             lastError = nil
             beginBackground()
-            locationKeeper.start()
+            locationKeeper.isKeepingSimulationAlive = true
             startResend(pairing: pairing)
             startHealth(pairing: pairing)
             if markRecent {

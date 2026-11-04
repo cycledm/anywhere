@@ -3,14 +3,22 @@ import Foundation
 
 final class BackgroundKeepAlive: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
+    private var isUpdating = false
     private(set) var lastKnownCoordinate: CLLocationCoordinate2D?
+
+    var isMapInForeground = false {
+        didSet { updateLocationService() }
+    }
+
+    var isKeepingSimulationAlive = false {
+        didSet { updateLocationService() }
+    }
 
     override init() {
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         manager.pausesLocationUpdatesAutomatically = false
-        manager.allowsBackgroundLocationUpdates = true
         manager.showsBackgroundLocationIndicator = false
     }
 
@@ -18,12 +26,18 @@ final class BackgroundKeepAlive: NSObject, CLLocationManagerDelegate {
         manager.requestWhenInUseAuthorization()
     }
 
-    func start() {
-        manager.startUpdatingLocation()
-    }
-
-    func stop() {
-        manager.stopUpdatingLocation()
+    private func updateLocationService() {
+        if manager.allowsBackgroundLocationUpdates != isKeepingSimulationAlive {
+            manager.allowsBackgroundLocationUpdates = isKeepingSimulationAlive
+        }
+        let shouldUpdate = isMapInForeground || isKeepingSimulationAlive
+        guard shouldUpdate != isUpdating else { return }
+        isUpdating = shouldUpdate
+        if shouldUpdate {
+            manager.startUpdatingLocation()
+        } else {
+            manager.stopUpdatingLocation()
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
