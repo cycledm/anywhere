@@ -41,6 +41,13 @@ version = {
     "size": ipa.stat().st_size,
     "minOSVersion": info["MinimumOSVersion"],
 }
-versions = [entry for entry in app["versions"] if version_key(entry) != version_key(version)]
+key = version_key(version)
+previous = next((entry for entry in app["versions"] if version_key(entry) == key), {})
+version["localizedDescription"] = (
+    (previous.get("localizedDescription") or "").strip()
+    or (release.get("body") or "").strip()
+    or f"Anywhere {version['version']} (Build {version['buildVersion']})."
+)
+versions = [entry for entry in app["versions"] if version_key(entry) != key]
 app["versions"] = sorted([version, *versions], key=version_key, reverse=True)
 source_path.write_text(json.dumps(source, ensure_ascii=False, indent=2) + "\n")

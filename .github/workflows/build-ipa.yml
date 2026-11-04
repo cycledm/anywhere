@@ -95,7 +95,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
         run: |
-          gh release view --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease,publishedAt \
+          gh release view --repo "$GITHUB_REPOSITORY" --json body,isDraft,isPrerelease,publishedAt \
             -- "$RELEASE_TAG" > "$RUNNER_TEMP/release.json"
           gh release download --repo "$GITHUB_REPOSITORY" --pattern Anywhere.ipa \
             --dir "$RUNNER_TEMP" -- "$RELEASE_TAG"
