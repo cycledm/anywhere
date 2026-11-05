@@ -186,4 +186,3 @@
 "Use a compatible network app to loop traffic for 10.7.0.1 back to this device." = "请用支持回环的网络工具，将发往 10.7.0.1 的流量送回本机。";
 "Location: %@" = "位置：%@";
 "Offset: %@ m" = "偏移：%@ 米";
-"Latitude %@, longitude %@" = "纬度 %@，经度 %@";

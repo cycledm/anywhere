@@ -3,4 +3,5 @@
 "Simulation Interrupted" = "模拟定位已中断";
 "Stop Simulated Location" = "停止模拟定位";
 "Stop" = "停止";
-"%@ (offset %@ m)" = "%1$@（偏移 %2$@ 米）";
+"Location: %@" = "位置：%@";
+"Offset: %@ m" = "偏移：%@ 米";

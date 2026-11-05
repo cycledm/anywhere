@@ -47,15 +47,23 @@ struct AnywhereLiveActivityWidget: Widget {
 
     private func status(_ state: SimulationActivityAttributes.ContentState) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(verbatim: "Anywhere")
-                .font(.headline)
             if let destination = state.destination {
-                Text("\(destination.location) (offset \(destination.formattedOffset) m)")
-                    .font(.subheadline)
-                    .lineLimit(2)
-                    .foregroundStyle(.secondary)
-            }
-            if state.destination == nil || state.status != .active {
+                Text("Location: \(destination.location)")
+                    .font(.subheadline.weight(.semibold))
+                    .lineLimit(1)
+                HStack(spacing: 4) {
+                    Text("Offset: \(destination.formattedOffset) m")
+                        .lineLimit(1)
+                    if state.status != .active {
+                        Image(systemName: statusIcon(state.status))
+                            .accessibilityLabel(statusLabel(state.status))
+                    }
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            } else {
+                Text(verbatim: "Anywhere")
+                    .font(.headline)
                 Label(statusLabel(state.status), systemImage: statusIcon(state.status))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)

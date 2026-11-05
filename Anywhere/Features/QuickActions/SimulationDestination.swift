@@ -23,7 +23,7 @@ struct SimulationDestination {
             let precision = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(6))
             let latitude = simulatedCoordinate.latitude.formatted(precision)
             let longitude = simulatedCoordinate.longitude.formatted(precision)
-            location = String(localized: "Latitude \(latitude), longitude \(longitude)")
+            location = "\(latitude), \(longitude)"
         }
         return .init(location: location, offsetMeters: origin.distance(from: target))
     }
