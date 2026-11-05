@@ -47,6 +47,8 @@ struct AnywhereLiveActivityWidget: Widget {
 
     private func status(_ state: SimulationActivityAttributes.ContentState) -> some View {
         VStack(alignment: .leading, spacing: 4) {
+            Text(verbatim: "Anywhere")
+                .font(.headline)
             if let destination = state.destination {
                 Text("Location: \(destination.location)")
                     .font(.subheadline.weight(.semibold))
@@ -62,8 +64,6 @@ struct AnywhereLiveActivityWidget: Widget {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             } else {
-                Text(verbatim: "Anywhere")
-                    .font(.headline)
                 Label(statusLabel(state.status), systemImage: statusIcon(state.status))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
