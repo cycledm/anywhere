@@ -76,13 +76,16 @@ final class SpoofSession: ObservableObject {
         didSet {
             guard status != oldValue else { return }
             switch status {
-            case .idle: liveActivity.end()
+            case .idle:
+                activityDestination = nil
+                liveActivity.end()
             case .connecting: break
             case .active:
-                liveActivity.start()
-                liveActivity.update(.active)
-            case .reconnecting: liveActivity.update(.reconnecting)
-            case .dropped: liveActivity.update(.interrupted)
+                reconcileLiveActivity()
+            case .reconnecting:
+                liveActivity.update(.init(status: .reconnecting, destination: activityDestination))
+            case .dropped:
+                liveActivity.update(.init(status: .interrupted, destination: activityDestination))
             }
         }
     }
@@ -105,6 +108,7 @@ final class SpoofSession: ObservableObject {
     private var joystickVector: CGVector = .zero
     private let locationKeeper = BackgroundKeepAlive()
     private let liveActivity = SimulationLiveActivity()
+    private var activityDestination: SimulationActivityAttributes.Destination?
 
     private let favoritesKey = "anywhere.favorites"
     private let recentsKey = "anywhere.recents"
@@ -124,14 +128,15 @@ final class SpoofSession: ObservableObject {
         locationKeeper.lastKnownCoordinate
     }
 
-    func teleport(to coordinate: CLLocationCoordinate2D, pairing: PairingStore, fromQuickAction: Bool = false) {
+    func teleport(to coordinate: CLLocationCoordinate2D, pairing: PairingStore, fromQuickAction: Bool = false,
+                  details: SimulationActivityAttributes.Destination? = nil) {
         guard pairing.hasPairingFile else {
             lastError = String(localized: "Import an RPPairing file in Settings first.")
             return
         }
         stopMotion()
         pin = coordinate
-        apply(coordinate, pairing: pairing, markRecent: true, notifyOnDrop: !fromQuickAction)
+        apply(coordinate, pairing: pairing, markRecent: true, notifyOnDrop: !fromQuickAction, details: details)
     }
 
     private func stopMotion() {
@@ -167,7 +172,11 @@ final class SpoofSession: ObservableObject {
 
     func reconcileLiveActivity() {
         if status == .idle { liveActivity.end() }
-        if status == .active { liveActivity.start() }
+        if status == .active {
+            let state = SimulationActivityAttributes.ContentState(status: .active, destination: activityDestination)
+            liveActivity.start(state)
+            liveActivity.update(state)
+        }
     }
 
     func setMapInForeground(_ inForeground: Bool) {
@@ -324,7 +333,8 @@ final class SpoofSession: ObservableObject {
         return false
     }
 
-    private func apply(_ coordinate: CLLocationCoordinate2D, pairing: PairingStore, markRecent: Bool, notifyOnDrop: Bool = true) {
+    private func apply(_ coordinate: CLLocationCoordinate2D, pairing: PairingStore, markRecent: Bool, notifyOnDrop: Bool = true,
+                       details: SimulationActivityAttributes.Destination? = nil) {
         if status == .idle || status.isDropped {
             status = .connecting
         }
@@ -337,6 +347,10 @@ final class SpoofSession: ObservableObject {
         isBusy = false
         switch result {
         case .success:
+            if markRecent || simulated == nil {
+                activityDestination = details ?? .init(location: suggestedFavoriteName(for: coordinate), offsetMeters: 0)
+                if status == .active { reconcileLiveActivity() }
+            }
             simulated = coordinate
             pin = coordinate
             status = .active

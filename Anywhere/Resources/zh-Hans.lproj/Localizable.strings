@@ -164,7 +164,6 @@
 "Maximum Offset Radius (Meters)" = "最大偏移半径（米）";
 "Is Simulated Location Active" = "是否正在模拟定位";
 "Returns whether Anywhere is currently simulating a location." = "返回 Anywhere 当前是否正在模拟定位。";
-"Offset distance: %@ m." = "偏移距离：%@ 米。";
 "Simulate location from ${mapLink}" = "使用 ${mapLink} 模拟定位";
 "Location" = "位置";
 "Enter offset radii from 0 to 20,015,114 meters, with the minimum no greater than the maximum." = "请输入 0 至 20,015,114 米之间的偏移半径，最小值不能大于最大值。";
@@ -178,8 +177,6 @@
 "Simulate a location from Shortcuts, with an optional random offset in meters." = "使用快捷指令传入的位置模拟定位，可设置以米为单位的随机偏移半径。";
 "Simulate the location ${location}" = "模拟定位到 ${location}";
 "The supplied location has no usable coordinates." = "传入的位置没有可用的坐标。";
-"Simulated location started: %@" = "已启动模拟定位：%@";
-"Simulated location started: latitude %@, longitude %@." = "已启动模拟定位：纬度 %@，经度 %@。";
 "Source altitude: %@ m." = "来源海拔：%@ 米。";
 "Device IP" = "设备 IP 地址";
 "Remote Pairing Port" = "远程配对端口";
@@ -187,3 +184,6 @@
 "Leave the port blank to discover it automatically. Enable loopback in your network app and start the first teleport on Wi-Fi." = "端口留空时会自动发现。请在网络工具中启用回环，并在 Wi-Fi 下首次模拟定位。";
 "Enter a valid IPv4 address and a port from 1 to 65535, or leave either field blank." = "请输入有效的 IPv4 地址和 1 至 65535 的端口，也可以将任一项留空。";
 "Use a compatible network app to loop traffic for 10.7.0.1 back to this device." = "请用支持回环的网络工具，将发往 10.7.0.1 的流量送回本机。";
+"Location: %@" = "位置：%@";
+"Offset: %@ m" = "偏移：%@ 米";
+"Latitude %@, longitude %@" = "纬度 %@，经度 %@";

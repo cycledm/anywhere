@@ -9,20 +9,20 @@ final class SimulationLiveActivity {
     private var pendingUpdate: Task<Void, Never>?
     private var endingIDs: Set<String> = []
 
-    func start() {
+    func start(_ state: SimulationActivityAttributes.ContentState) {
         guard activity == nil, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         if let existing = Activity<SimulationActivityAttributes>.activities.first(where: { !endingIDs.contains($0.id) }) {
             activity = existing
-            update(.active)
+            update(state)
             return
         }
         do {
             activity = try Activity.request(
                 attributes: SimulationActivityAttributes(),
-                content: ActivityContent(state: .active, staleDate: nil),
+                content: ActivityContent(state: state, staleDate: nil),
                 pushType: nil
             )
-            state = .active
+            self.state = state
         } catch {
             logger.error("Could not start Live Activity: \(error.localizedDescription, privacy: .public)")
         }

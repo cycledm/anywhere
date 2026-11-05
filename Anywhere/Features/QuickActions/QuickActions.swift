@@ -117,9 +117,10 @@ enum QuickActions {
             guard let target = LocationOffset.randomCoordinate(around: destination.coordinate, minimumRadius: minimumRadius, maximumRadius: maximumRadius) else {
                 throw QuickActionError.message(String(localized: "Could not find a coordinate within the requested offset range."))
             }
-            SpoofSession.shared.teleport(to: target, pairing: .shared, fromQuickAction: true)
+            let details = destination.displayDetails(simulatedCoordinate: target)
+            SpoofSession.shared.teleport(to: target, pairing: .shared, fromQuickAction: true, details: details)
             try checkSimulationError()
-            return destination.notificationBody(simulatedCoordinate: target)
+            return destination.notificationBody(details: details)
         }
     }
 
