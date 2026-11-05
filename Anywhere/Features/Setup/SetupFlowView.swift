@@ -268,7 +268,7 @@ struct SetupFlowView: View {
                     Text("Set up loopback")
                         .font(.title.weight(.bold))
 
-                    Text("Use a compatible network app to loop traffic for 10.7.0.1:49152 back to this iPhone.")
+                    Text("Use a compatible network app to loop traffic for 10.7.0.1 back to this device.")
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)

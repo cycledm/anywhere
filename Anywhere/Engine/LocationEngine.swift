@@ -2,7 +2,7 @@ import Foundation
 import idevice
 
 enum LocationEngineError: LocalizedError {
-    case invalidIP
+    case invalidEndpoint
     case pairingRead
     case tunnelCreate
     case remoteServer
@@ -13,7 +13,7 @@ enum LocationEngineError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidIP: return String(localized: "The loopback address is invalid.")
+        case .invalidEndpoint: return String(localized: "Enter a valid IPv4 address and a port from 1 to 65535, or leave either field blank.")
         case .pairingRead: return String(localized: "Could not read the RPPairing file. Generate one with idevice_pair in RPPairing mode.")
         case .tunnelCreate: return String(localized: "Could not open the developer tunnel. Check your loopback configuration and Wi-Fi connection.")
         case .remoteServer: return String(localized: "Connected to the tunnel but RemoteXPC handshake failed.")
@@ -26,7 +26,7 @@ enum LocationEngineError: LocalizedError {
 
     static func from(code: Int32) -> LocationEngineError {
         switch code {
-        case 1: return .invalidIP
+        case 1: return .invalidEndpoint
         case 2: return .pairingRead
         case 3: return .tunnelCreate
         case 9: return .remoteServer
@@ -48,7 +48,7 @@ enum LocationEngine {
     private static var locationSimulation: OpaquePointer?
 
     private static let ok: Int32 = 0
-    private static let invalidIP: Int32 = 1
+    private static let invalidEndpoint: Int32 = 1
     private static let pairingRead: Int32 = 2
     private static let tunnelCreate: Int32 = 3
     private static let remoteServerCode: Int32 = 9
@@ -123,11 +123,8 @@ enum LocationEngine {
     }
 
     private static func connectLocked(pairingPath: String) -> Int32 {
-        var address = sockaddr_in()
-        address.sin_family = sa_family_t(AF_INET)
-        address.sin_port = LoopbackEndpoint.port.bigEndian
-        let inetResult = LoopbackEndpoint.address.withCString { inet_pton(AF_INET, $0, &address.sin_addr) }
-        guard inetResult == 1 else { return invalidIP }
+        let endpoint = LoopbackEndpoint()
+        guard endpoint.isValid else { return invalidEndpoint }
 
         var pairingHandle: OpaquePointer?
         if let pairingError = pairingPath.withCString({ rp_pairing_file_read($0, &pairingHandle) }) {
@@ -136,6 +133,33 @@ enum LocationEngine {
         }
         guard let pairingHandle else { return pairingRead }
         defer { rp_pairing_file_free(pairingHandle) }
+
+        if let port = endpoint.manualPort {
+            return openTunnel(address: endpoint.address, port: port, pairingHandle: pairingHandle)
+        }
+
+        let cached = endpoint.cachedPort
+        if let cached {
+            let code = openTunnel(address: endpoint.address, port: cached, pairingHandle: pairingHandle)
+            if code != tunnelCreate { return code }
+        }
+
+        let discovered = LoopbackEndpoint.discoverPortSynchronously()
+        var attempted = Set([cached].compactMap { $0 })
+        for port in [discovered, LoopbackEndpoint.fallbackPort].compactMap({ $0 }) where attempted.insert(port).inserted {
+            let code = openTunnel(address: endpoint.address, port: port, pairingHandle: pairingHandle)
+            if code == ok { endpoint.remember(port: port) }
+            if code != tunnelCreate { return code }
+        }
+        return tunnelCreate
+    }
+
+    private static func openTunnel(address host: String, port: UInt16, pairingHandle: OpaquePointer) -> Int32 {
+        var address = sockaddr_in()
+        address.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
+        address.sin_family = sa_family_t(AF_INET)
+        address.sin_port = port.bigEndian
+        guard host.withCString({ inet_pton(AF_INET, $0, &address.sin_addr) }) == 1 else { return invalidEndpoint }
 
         let providerError = withUnsafePointer(to: &address) { pointer in
             pointer.withMemoryRebound(to: sockaddr.self, capacity: 1) {

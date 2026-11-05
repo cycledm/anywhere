@@ -9,6 +9,9 @@ struct AnywhereApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(SetupGate.defaultsKey) private var setupComplete = false
 
+    @AppStorage(LoopbackEndpoint.addressKey) private var loopbackAddress = ""
+    @AppStorage(LoopbackEndpoint.portKey) private var loopbackPort = ""
+
     /// Map when setup finished, or when already paired outside this walkthrough.
     private var showMap: Bool {
         setupComplete || (pairing.hasPairingFile && !SetupGate.isInProgress)
@@ -32,11 +35,12 @@ struct AnywhereApp: App {
             .onChange(of: showMap && scenePhase != .background, initial: true) { _, inForeground in
                 session.setMapInForeground(inForeground)
             }
-            .task(id: scenePhase == .active && pairing.hasPairingFile) {
+            .task(id: scenePhase == .active && pairing.hasPairingFile ? [loopbackAddress, loopbackPort] : nil) {
                 await loopback.monitor(whileActive: scenePhase == .active && pairing.hasPairingFile)
             }
             .task(id: scenePhase) {
                 guard scenePhase == .active else { return }
+                session.reconcileLiveActivity()
                 if !setupComplete, pairing.hasPairingFile, !SetupGate.isInProgress {
                     SetupGate.markComplete()
                     setupComplete = true

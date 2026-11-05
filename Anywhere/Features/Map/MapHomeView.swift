@@ -10,6 +10,7 @@ struct MapHomeView: View {
     @StateObject private var search = PlaceSearchCompleter()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var visibleCamera: MapCamera?
+    @State private var mapSize: CGSize = .zero
     @State private var searchText = ""
     @State private var searchTask: Task<Void, Never>?
     @FocusState private var searchFocused: Bool
@@ -112,9 +113,19 @@ struct MapHomeView: View {
                 }
                 .mapStyle(mapStyle)
                 .mapControlVisibility(.hidden)
+                .onGeometryChange(for: CGSize.self) { $0.size } action: { mapSize = $0 }
                 .onMapCameraChange { context in
                     search.region = context.region
                     visibleCamera = context.camera
+                }
+                .onChange(of: session.joystickActive) { _, active in
+                    guard active, let pin = session.pin else { return }
+                    let coordinate = mapCoordinates.toMap(pin)
+                    let bounds = CGRect(origin: .zero, size: mapSize)
+                    if let point = proxy.convert(coordinate, to: .local), bounds.contains(point) { return }
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        centerMap(on: coordinate)
+                    }
                 }
                 .onTapGesture { point in
                     searchFocused = false
@@ -309,6 +320,11 @@ struct MapHomeView: View {
     private var locateButton: some View {
         Button {
             searchFocused = false
+            if !session.isSpoofing {
+                session.pin = nil
+                pinPlaceName = nil
+                pinSelected = false
+            }
             goToCurrentLocation()
         } label: {
             Image(systemName: "location.fill")
@@ -328,10 +344,7 @@ struct MapHomeView: View {
         withAnimation(.easeInOut(duration: 0.35)) {
             let current = session.isSpoofing ? session.simulated : session.lastKnownCoordinate
             if let current {
-                position = .camera(MapCamera(
-                    centerCoordinate: mapCoordinates.toMap(current),
-                    distance: 900, heading: 0, pitch: 0
-                ))
+                centerMap(on: mapCoordinates.toMap(current))
             } else {
                 position = .userLocation(
                     followsHeading: false,
@@ -342,6 +355,10 @@ struct MapHomeView: View {
                 )
             }
         }
+    }
+
+    private func centerMap(on coordinate: CLLocationCoordinate2D) {
+        position = .camera(MapCamera(centerCoordinate: coordinate, distance: 900, heading: 0, pitch: 0))
     }
 
     private func chromeIconButton(_ systemName: String, action: @escaping () -> Void) -> some View {

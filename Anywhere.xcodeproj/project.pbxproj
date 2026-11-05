@@ -12,6 +12,8 @@
 		2198B4DCBB8A604F12CE0729 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA5820CFCD4178D77DFD1DCB /* InfoPlist.strings */; };
 		25148192310AA8D3666226A5 /* MapDropPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDCB3B0B51C3AA4B6D0794C /* MapDropPin.swift */; };
 		2AD734E81C6F387F842FC0BA /* AnywhereEasterEggView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B927A1B9B0DCD1D4A1B02448 /* AnywhereEasterEggView.swift */; };
+		30B0DFA48F5D014A09972B4B /* SimulationLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498C4AE82CD5EBB8ADA9BFD6 /* SimulationLiveActivity.swift */; };
+		377E08C2E417379732810DCE /* StopSimulationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8202105F43A1F3D85FE7A39 /* StopSimulationIntent.swift */; };
 		3DFCAA012BB953D288318D3D /* BackgroundKeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE904D0F0E057EC39C09859 /* BackgroundKeepAlive.swift */; };
 		3F505E13D32D79E2230C99F4 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F1C7ED34794CBC85B3B6A1 /* QuickActions.swift */; };
 		4392B35304DACBD7888D2726 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FAC5E557FF7623F7C22E48A /* Assets.xcassets */; };
@@ -19,6 +21,7 @@
 		4BA1D115E64F2088A458DF82 /* MapCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24417F1DBA3147F5EF673708 /* MapCoordinates.swift */; };
 		4BCB07B1717F94E33651AAB7 /* AnywhereAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30309CBD9ABED44CAB6EB2FB /* AnywhereAppDelegate.swift */; };
 		4C8B845473A8B7EB990D9385 /* AmapMainlandCoverage.json in Resources */ = {isa = PBXBuildFile; fileRef = CAF8D485945D402C1FE47067 /* AmapMainlandCoverage.json */; };
+		532251AA06311C429BD39E01 /* SimulationActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02497DDF2C8F27AA40F1472C /* SimulationActivityAttributes.swift */; };
 		5DE6F70EECD9EBFA66155021 /* SimulationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757A3AF2490E0F1B8A4D1A8A /* SimulationDestination.swift */; };
 		647CF447FD0FB92D360F475A /* AnywhereApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F5A6CF2A9DD16AB898B774 /* AnywhereApp.swift */; };
 		680DA58E314DF79E86942A39 /* PairOnDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870B9EE7295548403CBF115 /* PairOnDeviceView.swift */; };
@@ -31,6 +34,7 @@
 		80567B470F44AA546297A864 /* PairingDocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BBF56FCCDDF66852186F1 /* PairingDocumentPicker.swift */; };
 		8EFA2E4A4A27CA723C17A8FC /* LocationOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38D4654F02F9222A7B80D2 /* LocationOffset.swift */; };
 		933A9E11E31615BB8C14ECE6 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = C54B27EE28C586A1FE73CDF6 /* AppIcon.icon */; };
+		A2807A2081832E43DBC0E2CF /* AnywhereLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DDDC97CF28C3E39C1871A558 /* AnywhereLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A475E7DF47BD1DA81B266F29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54075C004BB8991CB1B71A25 /* SettingsView.swift */; };
 		AF8BB57CF2E00125CAEF6F32 /* RoutePlannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFEA56AED27E39198A12564 /* RoutePlannerSheet.swift */; };
 		B001106E0D3AF141660D45EF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF83564862555604168CE26 /* RootView.swift */; };
@@ -40,22 +44,53 @@
 		C070F2626867D032062971CF /* AppShortcuts.strings in Resources */ = {isa = PBXBuildFile; fileRef = 58581459285EB1C1A8BAE013 /* AppShortcuts.strings */; };
 		CF594276DF49DED0EC7BA51C /* LocationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F742B8871A6A9B1EF84D02E /* LocationEngine.swift */; };
 		D56BFF00FC30E2528B9EB365 /* StopSimulationIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8202105F43A1F3D85FE7A39 /* StopSimulationIntent.swift */; };
+		D81B477715BD708A794586B4 /* AnywhereLiveActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265813B2D4EA1241B7BB1678 /* AnywhereLiveActivityWidget.swift */; };
 		DC02A9F19C113F7EBE04B14A /* MapHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8470B080AD4E57626E0C83AA /* MapHomeView.swift */; };
 		DD2A3EB4D5A936A5B6FC5960 /* DeviceTunnel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78511A87FE2780FAEFA25A8E /* DeviceTunnel.swift */; };
+		FE6D08BE6F182AD49A3B04D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4AB00262AF4839EF4B7CC7B4 /* Localizable.strings */; };
+		FE9D2B9438C88C29C964D312 /* SimulationActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02497DDF2C8F27AA40F1472C /* SimulationActivityAttributes.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D7FFFB949F85455E0E40F474 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E772FF988ACFBC50D791B507 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DE80B3E0322BEECE8A7263C2;
+			remoteInfo = AnywhereLiveActivity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4A0EF597DA138A916486F09B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A2807A2081832E43DBC0E2CF /* AnywhereLiveActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0069039942A92D53DD48CC83 /* SilentAudioKeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilentAudioKeepAlive.swift; sourceTree = "<group>"; };
 		017EBCF6FD3FC3CFF7BA249C /* JoystickPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoystickPad.swift; sourceTree = "<group>"; };
+		02497DDF2C8F27AA40F1472C /* SimulationActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationActivityAttributes.swift; sourceTree = "<group>"; };
 		083BBF56FCCDDF66852186F1 /* PairingDocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingDocumentPicker.swift; sourceTree = "<group>"; };
 		0DE904D0F0E057EC39C09859 /* BackgroundKeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundKeepAlive.swift; sourceTree = "<group>"; };
 		126B7A98248C896A77B6FC77 /* SpoofSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofSession.swift; sourceTree = "<group>"; };
 		24417F1DBA3147F5EF673708 /* MapCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinates.swift; sourceTree = "<group>"; };
+		265813B2D4EA1241B7BB1678 /* AnywhereLiveActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnywhereLiveActivityWidget.swift; sourceTree = "<group>"; };
 		2E15FD1BF5C995A1F7B1BE8C /* RouteBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteBuilder.swift; sourceTree = "<group>"; };
 		2F56DD629B610733BC34AB1A /* idevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = idevice.h; sourceTree = "<group>"; };
 		30309CBD9ABED44CAB6EB2FB /* AnywhereAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnywhereAppDelegate.swift; sourceTree = "<group>"; };
 		40C0DADBF0D77E6F8BF206C8 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		433AE472D7C79905F3C25DF9 /* Anywhere.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Anywhere.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		498C4AE82CD5EBB8ADA9BFD6 /* SimulationLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationLiveActivity.swift; sourceTree = "<group>"; };
+		4AB00262AF4839EF4B7CC7B4 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		54075C004BB8991CB1B71A25 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		58581459285EB1C1A8BAE013 /* AppShortcuts.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = AppShortcuts.strings; path = "zh-Hans.lproj/AppShortcuts.strings"; sourceTree = "<group>"; };
 		5870B9EE7295548403CBF115 /* PairOnDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairOnDeviceView.swift; sourceTree = "<group>"; };
@@ -81,6 +116,7 @@
 		C54B27EE28C586A1FE73CDF6 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		CAF8D485945D402C1FE47067 /* AmapMainlandCoverage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AmapMainlandCoverage.json; sourceTree = "<group>"; };
 		D8202105F43A1F3D85FE7A39 /* StopSimulationIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopSimulationIntent.swift; sourceTree = "<group>"; };
+		DDDC97CF28C3E39C1871A558 /* AnywhereLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = AnywhereLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED38D4654F02F9222A7B80D2 /* LocationOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationOffset.swift; sourceTree = "<group>"; };
 		F4AC65E487E25227336681B6 /* PairOnDeviceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairOnDeviceService.swift; sourceTree = "<group>"; };
 		FFFEA56AED27E39198A12564 /* RoutePlannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePlannerSheet.swift; sourceTree = "<group>"; };
@@ -111,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				B965DF8BA875718FFBFD1415 /* Joystick */,
+				D923E5CBA1D50773121CF291 /* LiveActivity */,
 				FBD501F8CA825C175562FC98 /* Map */,
 				AFC0B54D662CCDC3077F3648 /* QuickActions */,
 				96595BAD7AF7EF0065239DC1 /* Routes */,
@@ -124,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				433AE472D7C79905F3C25DF9 /* Anywhere.app */,
+				DDDC97CF28C3E39C1871A558 /* AnywhereLiveActivity.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +242,15 @@
 			path = idevice;
 			sourceTree = "<group>";
 		};
+		ACBC0008A8D39C14541D0A94 /* AnywhereLiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				265813B2D4EA1241B7BB1678 /* AnywhereLiveActivityWidget.swift */,
+				4AB00262AF4839EF4B7CC7B4 /* Localizable.strings */,
+			);
+			path = AnywhereLiveActivity;
+			sourceTree = "<group>";
+		};
 		AFC0B54D662CCDC3077F3648 /* QuickActions */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +270,15 @@
 			path = Joystick;
 			sourceTree = "<group>";
 		};
+		D923E5CBA1D50773121CF291 /* LiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				02497DDF2C8F27AA40F1472C /* SimulationActivityAttributes.swift */,
+				498C4AE82CD5EBB8ADA9BFD6 /* SimulationLiveActivity.swift */,
+			);
+			path = LiveActivity;
+			sourceTree = "<group>";
+		};
 		E169D56E82B964364F5B12F3 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +293,7 @@
 			children = (
 				C54B27EE28C586A1FE73CDF6 /* AppIcon.icon */,
 				7482823A90199696391C0781 /* Anywhere */,
+				ACBC0008A8D39C14541D0A94 /* AnywhereLiveActivity */,
 				60340B699AE09F8E57AB4AFF /* Vendor */,
 				3E3BF46BB51F4D4A58149FE3 /* Products */,
 			);
@@ -261,10 +318,12 @@
 			buildPhases = (
 				FC948C4A6349C78DD11659EC /* Sources */,
 				59F56BF44D4D60BB498D57DC /* Resources */,
+				4A0EF597DA138A916486F09B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AC595DE13BD3B3E34BAF7786 /* PBXTargetDependency */,
 			);
 			name = Anywhere;
 			packageProductDependencies = (
@@ -272,6 +331,24 @@
 			productName = Anywhere;
 			productReference = 433AE472D7C79905F3C25DF9 /* Anywhere.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DE80B3E0322BEECE8A7263C2 /* AnywhereLiveActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 628FF78AD6D712CDABFB9A23 /* Build configuration list for PBXNativeTarget "AnywhereLiveActivity" */;
+			buildPhases = (
+				2CA042EDA8B482A20B1E25DA /* Sources */,
+				F3F5D44880275282D006F2F9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AnywhereLiveActivity;
+			packageProductDependencies = (
+			);
+			productName = AnywhereLiveActivity;
+			productReference = DDDC97CF28C3E39C1871A558 /* AnywhereLiveActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -285,6 +362,9 @@
 					8C9777F6C1A5FF0D6BD020CC = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
+					};
+					DE80B3E0322BEECE8A7263C2 = {
+						DevelopmentTeam = "";
 					};
 				};
 			};
@@ -304,6 +384,7 @@
 			projectRoot = "";
 			targets = (
 				8C9777F6C1A5FF0D6BD020CC /* Anywhere */,
+				DE80B3E0322BEECE8A7263C2 /* AnywhereLiveActivity */,
 			);
 		};
 /* End PBXProject section */
@@ -322,9 +403,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F3F5D44880275282D006F2F9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6D08BE6F182AD49A3B04D9 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2CA042EDA8B482A20B1E25DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D81B477715BD708A794586B4 /* AnywhereLiveActivityWidget.swift in Sources */,
+				532251AA06311C429BD39E01 /* SimulationActivityAttributes.swift in Sources */,
+				377E08C2E417379732810DCE /* StopSimulationIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FC948C4A6349C78DD11659EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -354,7 +453,9 @@
 				69D6F389DA41073F605B148A /* SetupFlowView.swift in Sources */,
 				46F3ECC58F69DE910E9AA50D /* SharedMapLink.swift in Sources */,
 				6DDCB27E9DB50F09BDB5A75D /* SilentAudioKeepAlive.swift in Sources */,
+				FE9D2B9438C88C29C964D312 /* SimulationActivityAttributes.swift in Sources */,
 				5DE6F70EECD9EBFA66155021 /* SimulationDestination.swift in Sources */,
+				30B0DFA48F5D014A09972B4B /* SimulationLiveActivity.swift in Sources */,
 				B37C807D41D88588C0BFB237 /* SpoofSession.swift in Sources */,
 				D56BFF00FC30E2528B9EB365 /* StopSimulationIntent.swift in Sources */,
 				690535959FCF3BD476F1111A /* Theme.swift in Sources */,
@@ -362,6 +463,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AC595DE13BD3B3E34BAF7786 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DE80B3E0322BEECE8A7263C2 /* AnywhereLiveActivity */;
+			targetProxy = D7FFFB949F85455E0E40F474 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0984524C12D875C3CAA9C83C /* Debug */ = {
@@ -371,7 +480,7 @@
 				CODE_SIGN_ENTITLEMENTS = Anywhere/Resources/Anywhere.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -382,7 +491,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Vendor/idevice",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lidevice_ffi",
@@ -401,6 +510,26 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Vendor/idevice";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		099B8B45F505180ED5D20D89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 13;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AnywhereLiveActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cycledm.anywhere.LiveActivity;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ANYWHERE_WIDGET_EXTENSION";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -471,6 +600,26 @@
 			};
 			name = Debug;
 		};
+		9B011AC668C198BB70C350B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CURRENT_PROJECT_VERSION = 13;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AnywhereLiveActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.cycledm.anywhere.LiveActivity;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ANYWHERE_WIDGET_EXTENSION";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9E786680B76B976A85031B41 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -478,7 +627,7 @@
 				CODE_SIGN_ENTITLEMENTS = Anywhere/Resources/Anywhere.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -489,7 +638,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Vendor/idevice",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lidevice_ffi",
@@ -579,6 +728,15 @@
 			buildConfigurations = (
 				0984524C12D875C3CAA9C83C /* Debug */,
 				9E786680B76B976A85031B41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		628FF78AD6D712CDABFB9A23 /* Build configuration list for PBXNativeTarget "AnywhereLiveActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				099B8B45F505180ED5D20D89 /* Debug */,
+				9B011AC668C198BB70C350B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

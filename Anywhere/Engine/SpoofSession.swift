@@ -72,7 +72,20 @@ enum SpoofStatus: Equatable {
 final class SpoofSession: ObservableObject {
     static let shared = SpoofSession()
 
-    @Published var status: SpoofStatus = .idle
+    @Published var status: SpoofStatus = .idle {
+        didSet {
+            guard status != oldValue else { return }
+            switch status {
+            case .idle: liveActivity.end()
+            case .connecting: break
+            case .active:
+                liveActivity.start()
+                liveActivity.update(.active)
+            case .reconnecting: liveActivity.update(.reconnecting)
+            case .dropped: liveActivity.update(.interrupted)
+            }
+        }
+    }
     @Published var pin: CLLocationCoordinate2D?
     @Published var simulated: CLLocationCoordinate2D?
     @Published var travelMode: TravelMode = .walk
@@ -91,6 +104,7 @@ final class SpoofSession: ObservableObject {
     private var backgroundTask = UIBackgroundTaskIdentifier.invalid
     private var joystickVector: CGVector = .zero
     private let locationKeeper = BackgroundKeepAlive()
+    private let liveActivity = SimulationLiveActivity()
 
     private let favoritesKey = "anywhere.favorites"
     private let recentsKey = "anywhere.recents"
@@ -151,6 +165,11 @@ final class SpoofSession: ObservableObject {
         locationKeeper.requestPermission()
     }
 
+    func reconcileLiveActivity() {
+        if status == .idle { liveActivity.end() }
+        if status == .active { liveActivity.start() }
+    }
+
     func setMapInForeground(_ inForeground: Bool) {
         locationKeeper.isMapInForeground = inForeground
     }
@@ -167,6 +186,9 @@ final class SpoofSession: ObservableObject {
         }
         if simulated == nil {
             apply(start, pairing: pairing, markRecent: false)
+            guard simulated != nil else { return }
+        } else {
+            pin = start
         }
         joystickActive = true
         joystickTimer?.invalidate()

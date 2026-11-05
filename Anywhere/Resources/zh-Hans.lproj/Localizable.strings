@@ -30,9 +30,7 @@
 "Done" = "完成";
 "Drive" = "驾车";
 "Drop a pin or teleport somewhere before using the joystick." = "请先放置图钉或开始模拟定位，再使用摇杆。";
-"Enable loopback to the on-device developer service in your network app. Start the first teleport on Wi-Fi." = "请在网络工具中启用回环，将流量送回本机开发者服务。首次模拟请连接 Wi-Fi。";
 "End" = "终点";
-"Endpoint" = "端点";
 "Engine" = "引擎";
 "Enter this code in Settings" = "在「设置」中输入此配对码";
 "Enter your unlock passcode first. On the next prompt, type Anywhere’s 6-digit code." = "先输入 iPhone 解锁密码，再在下一条提示中输入 Anywhere 显示的 6 位配对码。";
@@ -141,12 +139,10 @@
 "Teleport your location." = "在地图上选点，设置模拟位置。";
 "Teleport" = "模拟到此处";
 "Teleports show up here." = "模拟过的位置会显示在这里。";
-"The loopback address is invalid." = "回环地址无效。";
 "This will replace any pairing file currently stored in Anywhere." = "确认后会替换 Anywhere 中已有的配对文件。";
 "Try again" = "重试";
 "Type the code above into the second Settings prompt." = "请在「设置」的第二条提示中输入上方配对码。";
 "Unknown pairing error (%d)" = "未知配对错误（%d）";
-"Use a compatible network app to loop traffic for 10.7.0.1:49152 back to this iPhone." = "请用支持回环的网络工具，将发往 10.7.0.1:49152 的流量送回这台 iPhone。";
 "Use current pin / spoof as start" = "使用当前模拟位置或图钉作为起点";
 "Use current pin as end" = "使用当前图钉作为终点";
 "Use drawn path from map" = "使用在地图上绘制的路线";
@@ -185,3 +181,9 @@
 "Simulated location started: %@" = "已启动模拟定位：%@";
 "Simulated location started: latitude %@, longitude %@." = "已启动模拟定位：纬度 %@，经度 %@。";
 "Source altitude: %@ m." = "来源海拔：%@ 米。";
+"Device IP" = "设备 IP 地址";
+"Remote Pairing Port" = "远程配对端口";
+"Automatic" = "自动";
+"Leave the port blank to discover it automatically. Enable loopback in your network app and start the first teleport on Wi-Fi." = "端口留空时会自动发现。请在网络工具中启用回环，并在 Wi-Fi 下首次模拟定位。";
+"Enter a valid IPv4 address and a port from 1 to 65535, or leave either field blank." = "请输入有效的 IPv4 地址和 1 至 65535 的端口，也可以将任一项留空。";
+"Use a compatible network app to loop traffic for 10.7.0.1 back to this device." = "请用支持回环的网络工具，将发往 10.7.0.1 的流量送回本机。";

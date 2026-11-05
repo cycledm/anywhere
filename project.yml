@@ -22,6 +22,9 @@ targets:
     type: application
     productName: Anywhere
     platform: iOS
+    dependencies:
+      - target: AnywhereLiveActivity
+        embed: true
     sources:
       - path: Anywhere
         excludes:
@@ -35,8 +38,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.cycledm.anywhere
         PRODUCT_NAME: Anywhere
-        MARKETING_VERSION: "1.2.0"
-        CURRENT_PROJECT_VERSION: "12"
+        MARKETING_VERSION: &marketingVersion "1.2.1"
+        CURRENT_PROJECT_VERSION: &buildVersion "13"
         INFOPLIST_FILE: Anywhere/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: Anywhere/Resources/Anywhere.entitlements
         CODE_SIGN_STYLE: Automatic
@@ -62,3 +65,21 @@ targets:
         ENABLE_BITCODE: NO
         SUPPORTS_MACCATALYST: NO
         SWIFT_OBJC_BRIDGING_HEADER: ""
+  AnywhereLiveActivity:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: AnywhereLiveActivity
+        excludes:
+          - Info.plist
+      - path: Anywhere/Features/LiveActivity/SimulationActivityAttributes.swift
+      - path: Anywhere/Features/QuickActions/StopSimulationIntent.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.cycledm.anywhere.LiveActivity
+        MARKETING_VERSION: *marketingVersion
+        CURRENT_PROJECT_VERSION: *buildVersion
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: AnywhereLiveActivity/Info.plist
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) ANYWHERE_WIDGET_EXTENSION"

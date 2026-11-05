@@ -13,6 +13,9 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
 
+    @AppStorage(LoopbackEndpoint.addressKey) private var loopbackAddress = ""
+    @AppStorage(LoopbackEndpoint.portKey) private var loopbackPort = ""
+
     @State private var showImporter = false
     @State private var showPairOnDevice = false
     @State private var showNameEasterEgg = false
@@ -77,14 +80,28 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    LabeledContent("Endpoint", value: "\(LoopbackEndpoint.address):\(LoopbackEndpoint.port)")
+                    LabeledContent("Device IP") {
+                        TextField("Device IP", text: $loopbackAddress, prompt: Text(verbatim: LoopbackEndpoint.defaultAddress))
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .autocorrectionDisabled()
+                    }
+                    LabeledContent("Remote Pairing Port") {
+                        TextField("Remote Pairing Port", text: $loopbackPort, prompt: Text("Automatic"))
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                    }
                     LabeledContent("Status") {
                         LoopbackStatusText(reachable: loopback.reachable)
                     }
                 } header: {
                     Text("Loopback")
                 } footer: {
-                    Text("Enable loopback to the on-device developer service in your network app. Start the first teleport on Wi-Fi.")
+                    if LoopbackEndpoint().isValid {
+                        Text("Leave the port blank to discover it automatically. Enable loopback in your network app and start the first teleport on Wi-Fi.")
+                    } else {
+                        Text("Enter a valid IPv4 address and a port from 1 to 65535, or leave either field blank.")
+                    }
                 }
 
                 Section {

@@ -38,9 +38,9 @@ In Anywhere, choose **Reuse SideStore pairing** in setup or Settings, then confi
 
 ## 3. On-device loopback
 
-Configure your network app to send traffic to `10.7.0.1:49152` back to this iPhone. On Surge iOS, enable Enhanced Mode and use the [documented IP Rewrite reflection example](https://manual.nssurge.com/features/ip-rewrite.html). For Stash or another client, use an equivalent loopback configuration if supported by that client.
+Configure your network app to send traffic for `10.7.0.1` back to this device. On Surge iOS, enable Enhanced Mode and use the [documented IP Rewrite reflection example](https://manual.nssurge.com/features/ip-rewrite.html). For Stash or another client, use an equivalent loopback configuration if supported by that client.
 
-Open **Settings → Loopback** in Anywhere and look for **TCP reachable**. That status confirms the port accepted a TCP connection. Teleport also requires a working RPPairing file and developer service.
+In **Settings → Loopback**, leave **Device IP** blank to use `10.7.0.1` and **Remote Pairing Port** blank to discover the port automatically over Bonjour. Anywhere falls back to `49152` when needed. You can enter the device’s current port manually if discovery is unavailable. Look for **TCP reachable**. That status confirms the port accepted a TCP connection. Teleport also requires a working RPPairing file and developer service.
 
 ## 4. Teleport
 
@@ -56,6 +56,8 @@ On Wi‑Fi: drop a pin → **Teleport**. Then joystick / routes / GPX work; the 
 6. 在「快捷指令」中运行「停止模拟定位」。
 
 「是否正在模拟定位」返回布尔值，可直接用作「如果」的条件。
+
+保留实时活动扩展安装后，从 App 或快捷指令成功启动模拟时，支持的设备会显示实时活动。长按灵动岛展开，或在锁屏卡片上点「停止模拟定位」。使用 SideStore 安装时，可选择 **Keep App Extensions (Use Main Profile)** 尝试复用主 App 的描述文件。
 
 地图链接的通知显示偏移后的经纬度。位置输入提供名称时，通知显示该名称，否则显示坐标。如果来源提供有效海拔，坐标通知也会注明来源海拔。定位引擎只模拟经纬度。
 

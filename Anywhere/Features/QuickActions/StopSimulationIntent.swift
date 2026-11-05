@@ -9,12 +9,22 @@ struct StopSimulationIntent: LiveActivityIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
+        try await stop()
+        return .result()
+    }
+
+    @MainActor
+    private func stop() async throws {
+        #if ANYWHERE_WIDGET_EXTENSION
+        // WidgetKit dispatches this LiveActivityIntent to the containing app.
+        throw CancellationError()
+        #else
         try await QuickActions.run { _ in
             SpoofSession.shared.stop(pairing: .shared, fromQuickAction: true)
             try QuickActions.checkSimulationError()
             return String(localized: "Simulated location stopped.")
         }
-        return .result()
+        #endif
     }
 }
 
