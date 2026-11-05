@@ -12,6 +12,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.2.3",
+          "buildVersion": "15",
+          "date": "2026-11-05T08:19:29Z",
+          "downloadURL": "https://github.com/cycledm/anywhere/releases/download/v1.2.3/Anywhere.ipa",
+          "size": 4302355,
+          "minOSVersion": "18.0",
+          "localizedDescription": "**Full Changelog**: https://github.com/cycledm/anywhere/compare/v1.2.2...v1.2.3"
+        },
+        {
           "version": "1.2.2",
           "buildVersion": "14",
           "date": "2026-11-05T08:11:10Z",
